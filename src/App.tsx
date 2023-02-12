@@ -186,6 +186,7 @@ const App: Component = () => {
       </div>
       <div class="absolute top-0 left-0 p-2 bg-transparent" style="width:100px"></div>
       <div class="absolute top-0 right-0 p-2 bg-black text-white text-3xl" style="width:100px">
+        <button onClick={() => setColor("rouge")} style={{ "background-color": `rgba(${colorRGB["rouge"]}` }}>Rouge</button><br />
         <button onClick={() => setColor("jaune")} style={{ "background-color": `rgba(${colorRGB["jaune"]}` }}>Jaune</button><br />
         <button onClick={() => setColor("vert")} style={{ "background-color": `rgba(${colorRGB["vert"]}` }}>Vert</button><br />
         <button onClick={() => setColor("blanc")} style={{ "background-color": `rgba(${colorRGB["blanc"]}` }} >Blanc</button><br />
@@ -217,12 +218,12 @@ function themes(theme, color) {
 
 const colorRGB = {
   rouge: "110,0,0",
-  vert: "130,250,50",
-  bleu: "0,50,200",
   jaune: "230,220,0",
+  vert: "130,250,50",
+  blanc: "200,200,200",
+  bleu: "0,50,200",
   ciel: "100,200,250",
   violet: "160,100,220",
-  blanc: "200,200,200",
   noir: "0,0,0",
 }
 
