@@ -19,9 +19,14 @@
     "vite-plugin-solid": "^2.2.6"
   },
   "dependencies": {
+    "npm": "^9.4.1",
+    "pkg": "^5.8.0",
     "solid-js": "^1.6"
   },
   "prettier": {
     "printWidth": 120
-  }
+  },
+  "main": "postcss.config.js",
+  "keywords": [],
+  "author": ""
 }
