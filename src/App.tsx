@@ -98,7 +98,7 @@ let scheduledHide;
 const App: Component = () => {
   const options = new URLSearchParams(window.location.search);
   const [profileId, setProfileId] = createSignal(options.get("profileId")?.toString()?.split("-")[0]);
-  if (!!profileId) { setProfileId("6492127"); }
+  if (!!!profileId()) { setProfileId("6492127"); }
   // rouge, vert, bleu foncé, blanc, jaune, bleu clair et violet 
   const [color, setColor] = createSignal<"rouge" | "vert" | "bleu" | "blanc" | "jaune" | "ciel" | "violet" | "noir">((options.get("color") as any) ?? "noir");
   const [dkMode, setdkMode] = createSignal(false);
