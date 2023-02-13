@@ -101,7 +101,7 @@ const App: Component = () => {
   if (!!profileId) { setProfileId("6492127"); }
   // rouge, vert, bleu foncé, blanc, jaune, bleu clair et violet 
   const [color, setColor] = createSignal<"rouge" | "vert" | "bleu" | "blanc" | "jaune" | "ciel" | "violet" | "noir">((options.get("color") as any) ?? "noir");
-  const [theme, setTheme] = createSignal<"top" | "floating">((options.get("theme") as any) ?? "top");
+  const [dkMode, setdkMode] = createSignal(false);
   const [currentGame, { refetch }] = createResource(profileId, getLastGame);
   const [visible, setVisible] = createSignal(true);
   const game = () => (currentGame.loading ? currentGame.latest : currentGame());
@@ -128,7 +128,11 @@ const App: Component = () => {
   );
 
   return (
-    <div class="flex items-center flex-col w-[800px] mx-auto" style="text-shadow: 0 0 20px black;">
+    <div class={classes(
+      "flex items-center flex-col w-[840px] mx-auto",
+      dkMode() && "dark")}
+      style="text-shadow: 0 0 20px black;">
+
       {!profileId() && (
         <div class="bg-red-900 p-6 text-sm m-4 rounded-md">
           <div class="font-bold text-white text-md mb-4">No profile selected</div>
@@ -151,18 +155,18 @@ const App: Component = () => {
       <div
         class={classes(
           "w-full duration-700 fade-in fade-out",
-          theme() == "top" && "slide-in-from-top slide-out-to-top-20",
+          "slide-in-from-top slide-out-to-top-20",
           visible() ? "animate-in" : "animate-out"
         )}
         onanimationend={(e) => {
           e.target.classList.contains("animate-out") && e.target.classList.add("hidden");
-        }}
+        }}//
       >
         <div
           class={classes(
-            "from-black/90 via-black/70 to-black/90 bg-gradient-to-r rounded-md mt-0 w-full text-white inline-flex items-center relative p-1.5"
+            "from-black/90 via-black/70 to-black/90 bg-gradient-to-r rounded-md mt-0 w-full text-white dark:text-black inline-flex items-center relative p-1.5"
           )}
-          style={themes(theme(), color())}
+          style={themes(color())}
         >
           <div class="basis-1/2 flex flex-col gap-2">
             <For each={game()?.team}>
@@ -173,7 +177,6 @@ const App: Component = () => {
           </div>
           <div class="text-center basis-36 flex flex-col self-start	gap-1 px-4 whitespace-nowrap">
             <p class="text-sm font-bold">{currentGame()?.map}</p>
-            {theme() != "top" && <p class="text-sm uppercase text-white/80">{currentGame()?.kind}</p>}
           </div>
           <div class="basis-1/2 flex flex-col gap-2">
             <For each={game()?.opponents}>
@@ -186,14 +189,14 @@ const App: Component = () => {
       </div>
       <div class="absolute top-0 left-0 p-2 bg-transparent" style="width:100px"></div>
       <div class="absolute top-0 right-0 p-2 bg-black text-white text-3xl" style="width:100px">
-        <button onClick={() => setColor("rouge")} style={{ "background-color": `rgba(${colorRGB["rouge"]}` }}>Rouge</button><br />
-        <button onClick={() => setColor("jaune")} style={{ "background-color": `rgba(${colorRGB["jaune"]}` }}>Jaune</button><br />
-        <button onClick={() => setColor("vert")} style={{ "background-color": `rgba(${colorRGB["vert"]}` }}>Vert</button><br />
-        <button onClick={() => setColor("blanc")} style={{ "background-color": `rgba(${colorRGB["blanc"]}` }} >Blanc</button><br />
-        <button onClick={() => setColor("bleu")} style={{ "background-color": `rgba(${colorRGB["bleu"]}` }}>Bleu</button><br />
-        <button onClick={() => setColor("ciel")} style={{ "background-color": `rgba(${colorRGB["ciel"]}` }}>Ciel</button><br />
-        <button onClick={() => setColor("violet")} style={{ "background-color": `rgba(${colorRGB["violet"]}` }}>Violet</button><br />
-        <button onClick={() => setColor("noir")} style={{ "background-color": `rgba(${colorRGB["noir"]}` }}>Noir</button>
+        <button onClick={() => { setColor("rouge"); setdkMode(false) }} style={{ "background-color": `rgba(${colorRGB["rouge"]}` }}>Rouge</button><br />
+        <button onClick={() => { setColor("jaune"); setdkMode(true) }} style={{ "background-color": `rgba(${colorRGB["jaune"]}` }}>Jaune</button><br />
+        <button onClick={() => { setColor("vert"); setdkMode(false) }} style={{ "background-color": `rgba(${colorRGB["vert"]}` }}>Vert</button><br />
+        <button onClick={() => { setColor("blanc"); setdkMode(true) }} style={{ "background-color": `rgba(${colorRGB["blanc"]}` }} >Blanc</button><br />
+        <button onClick={() => { setColor("bleu"); setdkMode(false) }} style={{ "background-color": `rgba(${colorRGB["bleu"]}` }}>Bleu</button><br />
+        <button onClick={() => { setColor("ciel"); setdkMode(false) }} style={{ "background-color": `rgba(${colorRGB["ciel"]}` }}>Ciel</button><br />
+        <button onClick={() => { setColor("violet"); setdkMode(false) }} style={{ "background-color": `rgba(${colorRGB["violet"]}` }}>Violet</button><br />
+        <button onClick={() => { setColor("noir"); setdkMode(false) }} style={{ "background-color": `rgba(${colorRGB["noir"]}` }}>Noir</button>
         <button onClick={() => toggle(!visible())}>Show</button>
       </div>
     </div >
@@ -201,32 +204,31 @@ const App: Component = () => {
 };
 
 
-function themes(theme, color) {
-  if (theme == "floating") {
-    return `
-      margin: 10px;
-    `
-  }
-  if (theme == "top") {
-    return `
-      background-image: radial-gradient(circle at bottom, rgba(${colorRGB[color]},0) 0%, rgba(${colorRGB[color]},0) 5%, rgba(${colorRGB[color]},0.7) 25%, rgba(${colorRGB[color]},0.9) 80%);
+const themes = (color) => (
+  `
+      background-image: radial-gradient(circle at bottom, 
+        rgba(${colorRGB[color]},0) 0%, 
+        rgba(${colorRGB[color]},0) 5%, 
+        rgba(${colorRGB[color]},0.5) 25%, 
+        rgba(${colorRGB[color]},0.9) 93%,
+        rgba(${colorRGB[color]},0) 100%);
       border-top-left-radius: 0;
       border-top-right-radius: 0;
+      padding-left:20px;
+      padding-right:20px;
     `
-  }
-}
+)
 
 const colorRGB = {
   rouge: "110,0,0",
   jaune: "230,220,0",
-  vert: "130,250,50",
+  vert: "154,205,50",
   blanc: "200,200,200",
   bleu: "0,50,200",
   ciel: "100,200,250",
   violet: "160,100,220",
   noir: "0,0,0",
 }
-
 export default App;
 
 function classes(...args: any[]) {
