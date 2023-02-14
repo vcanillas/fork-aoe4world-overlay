@@ -130,8 +130,7 @@ const App: Component = () => {
   return (
     <div class={classes(
       "flex items-center flex-col w-[840px] mx-auto",
-      dkMode() && "dark")}
-      style="text-shadow: 0 0 20px black;">
+      dkMode() ? "dark shadowingtext-dark" : "shadowingtext")}>
 
       {!profileId() && (
         <div class="bg-red-900 p-6 text-sm m-4 rounded-md">
@@ -164,7 +163,7 @@ const App: Component = () => {
       >
         <div
           class={classes(
-            "from-black/90 via-black/70 to-black/90 bg-gradient-to-r rounded-md mt-0 w-full text-white dark:text-black inline-flex items-center relative p-1.5"
+            "from-black/90 via-black/70 to-black/90 bg-gradient-to-r rounded-md mt-0 w-full text-white dark:text-gray inline-flex items-center relative p-1.5"
           )}
           style={themes(color())}
         >
