@@ -130,7 +130,7 @@ const App: Component = () => {
   return (
     <div class={classes(
       "flex items-center flex-col w-[840px] mx-auto",
-      dkMode() ? "dark shadowingtext-dark" : "shadowingtext")}>
+      dkMode() ? "dark shadowingtext-light" : "shadowingtext-dark")}>
 
       {!profileId() && (
         <div class="bg-red-900 p-6 text-sm m-4 rounded-md">

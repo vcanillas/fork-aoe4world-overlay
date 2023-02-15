@@ -11,10 +11,10 @@
     font-family: "beyno";
 }
 
-.shadowingtext{
-    text-shadow: 0 0 20px white;
-}
-
 .shadowingtext-dark{
     text-shadow: 0 0 20px black;
+}
+
+.shadowingtext-light{
+    text-shadow: 0 0 20px white;
 }
