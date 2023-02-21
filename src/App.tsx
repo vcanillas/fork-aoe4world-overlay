@@ -10,7 +10,7 @@ import {
   onMount,
   splitProps,
 } from "solid-js";
-import { Civilization, getLastGame, Player as TeamPlayer } from "./query";
+import { Civilization, getLastGame, Player as TeamPlayer, Theme } from "./query";
 import { BADGES } from "./assets";
 
 // seconds
@@ -100,8 +100,7 @@ const App: Component = () => {
   const [profileId, setProfileId] = createSignal(options.get("profileId")?.toString()?.split("-")[0]);
   if (!!!profileId()) { setProfileId("6492127"); }
   // rouge, vert, bleu foncé, blanc, jaune, bleu clair et violet 
-  const [color, setColor] = createSignal<"rouge" | "vert" | "bleu" | "blanc" | "jaune" | "ciel" | "violet" | "noir">((options.get("color") as any) ?? "noir");
-  const [dkMode, setdkMode] = createSignal(false);
+  const [color, setColor] = createSignal<Theme>(colorRGB["Noir"]);
   const [currentGame, { refetch }] = createResource(profileId, getLastGame);
   const [visible, setVisible] = createSignal(true);
   const game = () => (currentGame.loading ? currentGame.latest : currentGame());
@@ -130,7 +129,7 @@ const App: Component = () => {
   return (
     <div class={classes(
       "flex items-center flex-col w-[840px] mx-auto",
-      dkMode() ? "dark shadowingtext-light" : "shadowingtext-dark")}>
+      color().darkMode ? "dark shadowingtext-light" : "shadowingtext-dark")}>
 
       {!profileId() && (
         <div class="bg-red-900 p-6 text-sm m-4 rounded-md">
@@ -186,16 +185,18 @@ const App: Component = () => {
           </div>
         </div>
       </div>
-      <div class="absolute top-0 left-0 p-2 bg-transparent" style="width:100px"></div>
+      <div class="absolute top-0 left-0 p-2 bg-transparent" style="width:100px">
+
+
+      </div>
       <div class="absolute top-0 right-0 p-2 bg-black text-white text-3xl" style="width:100px">
-        <button onClick={() => { setColor("rouge"); setdkMode(false) }} style={{ "background-color": `rgba(${colorRGB["rouge"]}` }}>Rouge</button><br />
-        <button onClick={() => { setColor("jaune"); setdkMode(true) }} style={{ "background-color": `rgba(${colorRGB["jaune"]}` }}>Jaune</button><br />
-        <button onClick={() => { setColor("vert"); setdkMode(false) }} style={{ "background-color": `rgba(${colorRGB["vert"]}` }}>Vert</button><br />
-        <button onClick={() => { setColor("blanc"); setdkMode(true) }} style={{ "background-color": `rgba(${colorRGB["blanc"]}` }} >Blanc</button><br />
-        <button onClick={() => { setColor("bleu"); setdkMode(false) }} style={{ "background-color": `rgba(${colorRGB["bleu"]}` }}>Bleu</button><br />
-        <button onClick={() => { setColor("ciel"); setdkMode(false) }} style={{ "background-color": `rgba(${colorRGB["ciel"]}` }}>Ciel</button><br />
-        <button onClick={() => { setColor("violet"); setdkMode(false) }} style={{ "background-color": `rgba(${colorRGB["violet"]}` }}>Violet</button><br />
-        <button onClick={() => { setColor("noir"); setdkMode(false) }} style={{ "background-color": `rgba(${colorRGB["noir"]}` }}>Noir</button>
+
+        <For each={Object.entries(colorRGB)}>
+          {(acolor) => (
+            <><button onClick={() => { setColor(acolor[1]); }} style={{ "background-color": `rgba(${acolor[1].rgb}` }}>{acolor[0]}</button><br /></>
+          )}
+        </For>
+
         <button onClick={() => toggle(!visible())}>Show</button>
       </div>
     </div >
@@ -203,14 +204,14 @@ const App: Component = () => {
 };
 
 
-const themes = (color) => (
+const themes = (c: Theme) => (
   `
       background-image: radial-gradient(circle at bottom, 
-        rgba(${colorRGB[color]},0) 0%, 
-        rgba(${colorRGB[color]},0) 5%, 
-        rgba(${colorRGB[color]},0.5) 25%, 
-        rgba(${colorRGB[color]},0.9) 93%,
-        rgba(${colorRGB[color]},0) 100%);
+        rgba(${c.rgb},0) 0%, 
+        rgba(${c.rgb},0) 5%, 
+        rgba(${c.rgb},0.5) 25%, 
+        rgba(${c.rgb},0.9) 93%,
+        rgba(${c.rgb},0) 100%);
       border-top-left-radius: 0;
       border-top-right-radius: 0;
       padding-left:20px;
@@ -218,16 +219,17 @@ const themes = (color) => (
     `
 )
 
-const colorRGB = {
-  rouge: "110,0,0",
-  jaune: "230,220,0",
-  vert: "154,205,50",
-  blanc: "200,200,200",
-  bleu: "0,50,200",
-  ciel: "100,200,250",
-  violet: "160,100,220",
-  noir: "0,0,0",
+const colorRGB: Record<string, Theme> = {
+  Rouge: { rgb: "110,0,0", darkMode: false },
+  Jaune: { rgb: "230,220,0", darkMode: true },
+  Vert: { rgb: "154,205,50", darkMode: false },
+  Blanc: { rgb: "200,200,200", darkMode: true },
+  Bleu: { rgb: "0,50,200", darkMode: false },
+  Ciel: { rgb: "100,200,250", darkMode: false },
+  Violet: { rgb: "160,100,220", darkMode: false },
+  Noir: { rgb: "0,0,0", darkMode: false },
 }
+
 export default App;
 
 function classes(...args: any[]) {

@@ -220,3 +220,7 @@ interface ApiRating {
   games_count: number;
 }
 
+export type Theme = {
+  rgb: string,
+  darkMode: boolean
+}
