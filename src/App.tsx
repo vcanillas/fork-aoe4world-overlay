@@ -222,6 +222,7 @@ const themes = (c: Theme) => (
 const colorRGB: Record<string, Theme> = {
   Rouge: { rgb: "110,0,0", darkMode: false },
   Jaune: { rgb: "230,220,0", darkMode: true },
+  Moutarde: { rgb: "242,201,35", darkMode: true },
   Vert: { rgb: "154,205,50", darkMode: false },
   Blanc: { rgb: "200,200,200", darkMode: true },
   Bleu: { rgb: "0,50,200", darkMode: false },
