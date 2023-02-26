@@ -173,8 +173,11 @@ const App: Component = () => {
               )}
             </For>
           </div>
-          <div class="text-center basis-36 flex flex-col self-start	gap-1 px-4 whitespace-nowrap">
-            <p class="text-sm font-bold">{currentGame()?.map}</p>
+          <div class="text-center basis-36 flex flex-col self-start gap-1 px-4 whitespace-nowrap">
+            <p class={classes(
+              "text-sm font-bold ",
+              color().darkMode ? "maptext-light" : "maptext-dark"
+            )}>{currentGame()?.map}</p>
           </div>
           <div class="basis-1/2 flex flex-col gap-2">
             <For each={game()?.opponents}>
