@@ -185,19 +185,17 @@ const App: Component = () => {
           </div>
         </div>
       </div>
-      <div class="absolute top-0 left-0 p-2 bg-transparent" style="width:100px">
+      <div class="absolute top-0 left-0 p-2 bg-transparent" style="width:100px"></div>
 
-
-      </div>
-      <div class="absolute top-0 right-0 p-2 bg-black text-white text-3xl" style="width:100px">
-
-        <For each={Object.entries(colorRGB)}>
-          {(acolor) => (
-            <><button onClick={() => { setColor(acolor[1]); }} style={{ "background-color": `rgba(${acolor[1].rgb}` }}>{acolor[0]}</button><br /></>
-          )}
-        </For>
-
-        <button onClick={() => toggle(!visible())}>Show</button>
+      <div class="absolute top-0 right-0 p-2 bg-black" style="width:100px">
+        <div class=" grid grid-cols-3">
+          <For each={Object.entries(colorRGB)}>
+            {(acolor) => (
+              <><button onClick={() => { setColor(acolor[1]); }} style={{ "background-color": `rgba(${acolor[1].rgb}`, "height": "3em" }} /> </>
+            )}
+          </For>
+        </div>
+        <button onClick={() => toggle(!visible())} class="text-white text-3xl">Show</button>
       </div>
     </div >
   );
@@ -220,6 +218,7 @@ const themes = (c: Theme) => (
 )
 
 const colorRGB: Record<string, Theme> = {
+  Noir: { rgb: "0,0,0", darkMode: false },
   Rouge: { rgb: "110,0,0", darkMode: false },
   Jaune: { rgb: "230,220,0", darkMode: true },
   Moutarde: { rgb: "242,201,35", darkMode: true },
@@ -228,7 +227,6 @@ const colorRGB: Record<string, Theme> = {
   Bleu: { rgb: "0,50,200", darkMode: false },
   Ciel: { rgb: "100,200,250", darkMode: false },
   Violet: { rgb: "160,100,220", darkMode: false },
-  Noir: { rgb: "0,0,0", darkMode: false },
 }
 
 export default App;
